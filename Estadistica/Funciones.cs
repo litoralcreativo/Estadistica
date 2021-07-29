@@ -61,10 +61,29 @@ namespace Estadistica
             return result;
         }
 
-        public static double Moda(int[] muestra)
+        public static List<int> Moda(int[] muestra)
         {
             Dictionary<int, int> repetition = Repetitions(muestra);
-            return 0;
+            List<int> mayores = new List<int>();
+            int moda = repetition.ElementAt(0).Key;
+            int moda_rep = repetition.ElementAt(0).Value;
+            mayores.Add(moda);
+            bool change = false;
+            int i = 1;
+            while (!change && i < repetition.Count)
+            {
+                int _moda_rep = repetition.ElementAt(i).Value;
+                if (moda_rep == _moda_rep)
+                {
+                    int _moda = repetition.ElementAt(i).Key;
+                    mayores.Add(_moda);
+                } else
+                {
+                    change = true;
+                }
+                i++;
+            }
+            return mayores;
         }
 
         public static DistributionSimetry Simetria(double [] muestra)
