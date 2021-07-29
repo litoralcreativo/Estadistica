@@ -202,16 +202,8 @@ namespace Estadistica
 
         public static int[] Reduce(int[] muestra, int percent)
         {
-            int unitsToRemove = percent * muestra.Length / 100;
+            int unitsToRemove = 2 * percent * muestra.Length / 100;
             
-            if (unitsToRemove != 0)
-            {
-                if (unitsToRemove % 2 != 0)
-                {
-                    unitsToRemove -= 1;
-                }
-            }
-
             int startIndex = (unitsToRemove / 2);
             int[] _muestra = new int[muestra.Length - unitsToRemove];
             for (int i = 0; i < _muestra.Length; i++)
