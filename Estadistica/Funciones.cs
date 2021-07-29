@@ -26,6 +26,21 @@ namespace Estadistica
             return sum / muestra.Length;
         }
 
+        public static double MediaRecortada(int[] muestra, int percent)
+        {
+            muestra = Sort(muestra);
+            muestra = Reduce(muestra, percent);
+            double result = Media(muestra);
+            return result;
+        }
+        public static double MediaRecortada(double[] muestra, int percent)
+        {
+            muestra = Sort(muestra);
+            muestra = Reduce(muestra, percent);
+            double result = Media(muestra);
+            return result;
+        }
+
         public static double Mediana(double[] muestra)
         {
             double result; 
@@ -85,6 +100,31 @@ namespace Estadistica
             }
             return mayores;
         }
+        public static List<double> Moda(double[] muestra)
+        {
+            Dictionary<double, int> repetition = Repetitions(muestra);
+            List<double> mayores = new List<double>();
+            double moda = repetition.ElementAt(0).Key;
+            int moda_rep = repetition.ElementAt(0).Value;
+            mayores.Add(moda);
+            bool change = false;
+            int i = 1;
+            while (!change && i < repetition.Count)
+            {
+                int _moda_rep = repetition.ElementAt(i).Value;
+                if (moda_rep == _moda_rep)
+                {
+                    double _moda = repetition.ElementAt(i).Key;
+                    mayores.Add(_moda);
+                }
+                else
+                {
+                    change = true;
+                }
+                i++;
+            }
+            return mayores;
+        }
 
         public static DistributionSimetry Simetria(double [] muestra)
         {
@@ -103,11 +143,6 @@ namespace Estadistica
                 simetria = DistributionSimetry.PositiveSkew;
             }
             return simetria;
-        }
-
-        public static double Moda(double muestra)
-        {
-            return 0;
         }
 
         #region utils
@@ -151,6 +186,10 @@ namespace Estadistica
         {
             return dictionary.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
         }
+        public static Dictionary<double, int> SortByRepetition(Dictionary<double, int> dictionary)
+        {
+            return dictionary.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+        }
 
         public static bool EsPar(double[] muestra)
         {
@@ -161,12 +200,65 @@ namespace Estadistica
             return muestra.Length % 2 == 0;
         }
 
+        public static int[] Reduce(int[] muestra, int percent)
+        {
+            int unitsToRemove = percent * muestra.Length / 100;
+            
+            if (unitsToRemove != 0)
+            {
+                if (unitsToRemove % 2 != 0)
+                {
+                    unitsToRemove -= 1;
+                }
+            }
+
+            int startIndex = (unitsToRemove / 2);
+            int[] _muestra = new int[muestra.Length - unitsToRemove];
+            for (int i = 0; i < _muestra.Length; i++)
+            {
+                _muestra[i] = muestra[startIndex + i];
+            }
+            return _muestra;
+        }
+        public static double[] Reduce(double[] muestra, int percent)
+        {
+            int unitsToRemove = percent * muestra.Length / 100;
+
+            if (unitsToRemove != 0)
+            {
+                if (unitsToRemove % 2 != 0)
+                {
+                    unitsToRemove -= 1;
+                }
+            }
+
+            int startIndex = (unitsToRemove / 2);
+            double[] _muestra = new double[muestra.Length - unitsToRemove];
+            for (int i = 0; i < _muestra.Length; i++)
+            {
+                _muestra[i] = muestra[startIndex + i];
+            }
+            return _muestra;
+        }
+
+
         public static Dictionary<int, int> Repetitions(int[] muestra)
         {
             Dictionary<int, int> repetitions = new Dictionary<int, int>();
             for (int i = 0; i < muestra.Length; i++)
             {
                 int element = muestra[i];
+                repetitions.TryGetValue(element, out int count);
+                repetitions[element] = count + 1;
+            }
+            return SortByRepetition(repetitions);
+        }
+        public static Dictionary<double, int> Repetitions(double[] muestra)
+        {
+            Dictionary<double, int> repetitions = new Dictionary<double, int>();
+            for (int i = 0; i < muestra.Length; i++)
+            {
+                double element = muestra[i];
                 repetitions.TryGetValue(element, out int count);
                 repetitions[element] = count + 1;
             }
