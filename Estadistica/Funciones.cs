@@ -43,7 +43,7 @@ namespace Estadistica
 
         public static double Mediana(double[] muestra)
         {
-            double result; 
+            double result;
             muestra = Sort(muestra);
             if (EsPar(muestra))
             {
@@ -72,6 +72,57 @@ namespace Estadistica
             else
             {
                 result = muestra[(muestra.Length - 1) / 2];
+            }
+            return result;
+        }
+
+        public static double[] Cuartil(double[] muestra)
+        {
+            double[] result = { 0, 0, 0 };
+            muestra = Sort(muestra);
+            int len = muestra.Length;
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                /*
+                 * Gets virtual position of the element in the Qi position
+                 * then truncate that value to get the index of the lower element
+                 * and then the upper element. After that it takes the decimal 
+                 * aproximation of each element to the virtual postion and interpolates
+                 * the value for those elements.
+                 */
+                double Q_decimePos = ((len + 1) * (i + 1.0) / 4)-1;
+                int Q_low = (int)Math.Truncate(Q_decimePos);
+                int Q_high = Q_low + 1;
+                double Q_decimal_high = Q_decimePos - Q_low;
+                double Q_decimal_low = 1 - Q_decimal_high;
+                double Q = muestra[Q_low] * Q_decimal_low + muestra[Q_high] * Q_decimal_high;
+                result[i] = Q;
+            }
+            return result;
+        }
+        public static double[] Cuartil(int[] muestra)
+        {
+            double[] result = { 0, 0, 0 };
+            muestra = Sort(muestra);
+            int len = muestra.Length;
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                /*
+                 * Gets virtual position of the element in the Qi position
+                 * then truncate that value to get the index of the lower element
+                 * and then the upper element. After that it takes the decimal 
+                 * aproximation of each element to the virtual postion and interpolates
+                 * the value for those elements.
+                 */
+                double Q_decimePos = ((len + 1) * (i + 1.0) / 4) - 1;
+                int Q_low = (int)Math.Truncate(Q_decimePos);
+                int Q_high = Q_low + 1;
+                double Q_decimal_high = Q_decimePos - Q_low;
+                double Q_decimal_low = 1 - Q_decimal_high;
+                double Q = muestra[Q_low] * Q_decimal_low + muestra[Q_high] * Q_decimal_high;
+                result[i] = Q;
             }
             return result;
         }
@@ -130,7 +181,7 @@ namespace Estadistica
         {
             DistributionSimetry simetria;
             double media = Media(muestra);
-            double mediana = Media(muestra);
+            double mediana = Mediana(muestra);
             if (media == mediana)
             {
                 simetria = DistributionSimetry.Symmetrical;
@@ -214,7 +265,7 @@ namespace Estadistica
         }
         public static double[] Reduce(double[] muestra, int percent)
         {
-            int unitsToRemove = percent * muestra.Length / 100;
+            int unitsToRemove = 2 * percent * muestra.Length / 100;
 
             if (unitsToRemove != 0)
             {

@@ -33,3 +33,12 @@ A partir de un vector de `double`:
 ```cs
 DistributionSimetry Simetria(double [] muestra);
 ```
+
+### Cuartiles
+A partir de un vector de `int` o `double`, devuelve un `double[3]` donde:
+- Q1 = `Cuartil[0]`
+- Q2 = `Cuartil[1]` = mediana
+- Q3 = `Cuartil[2]`
+```cs
+double[] Cuartil(double[] muestra)
+```
