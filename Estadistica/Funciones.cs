@@ -233,6 +233,110 @@ namespace Estadistica
             return mayores;
         }
 
+        public static double Min(double[] muestra)
+        {
+            double result = muestra[0];
+            for (int i = 1; i < muestra.Length; i++)
+            {
+                double newValue = muestra[i];
+                if (newValue < result)
+                {
+                    result = newValue;
+                }
+            }
+            return result;
+        }
+        public static int Min(int[] muestra)
+        {
+            int result = muestra[0];
+            for (int i = 1; i < muestra.Length; i++)
+            {
+                int newValue = muestra[i];
+                if (newValue < result)
+                {
+                    result = newValue;
+                }
+            }
+            return result;
+        }
+
+        public static double Max(double[] muestra)
+        {
+            double result = muestra[0];
+            for (int i = 1; i < muestra.Length; i++)
+            {
+                double newValue = muestra[i];
+                if (newValue > result)
+                {
+                    result = newValue;
+                }
+            }
+            return result;
+        }
+        public static int Max(int[] muestra)
+        {
+            int result = muestra[0];
+            for (int i = 1; i < muestra.Length; i++)
+            {
+                int newValue = muestra[i];
+                if (newValue > result)
+                {
+                    result = newValue;
+                }
+            }
+            return result;
+        }
+
+        public static double Rango(double[] muestra)
+        {
+            return Max(muestra) - Min(muestra);
+        }
+        public static int Rango(int[] muestra)
+        {
+            return Max(muestra) - Min(muestra);
+        }
+
+        public static double DesviacionEstandar (double[] muestra)
+        {
+            double result = 0;
+            double media = Media(muestra);
+            for (int i = 0; i < muestra.Length; i++)
+            {
+                result += Math.Pow(muestra[i] - media, 2);
+            }
+            result = result / (muestra.Length - 1);
+            return Math.Sqrt(result);
+        }
+        public static double DesviacionEstandar(int[] muestra)
+        {
+            double result = 0;
+            double media = Media(muestra);
+            for (int i = 0; i < muestra.Length; i++)
+            {
+                result += Math.Pow(muestra[i] - media, 2);
+            }
+            result = result / (muestra.Length - 1);
+            return Math.Sqrt(result);
+        }
+
+        public static double Varianza(double[] muestra)
+        {
+            return Math.Pow(DesviacionEstandar(muestra), 2);
+        }
+        public static double Varianza(int[] muestra)
+        {
+            return Math.Pow(DesviacionEstandar(muestra), 2);
+        }
+
+        public static double CoeficienteDeVariacion (double[] muestra)
+        {
+            return (DesviacionEstandar(muestra) / Media(muestra))*100;
+        }
+        public static double CoeficienteDeVariacion(int[] muestra)
+        {
+            return (DesviacionEstandar(muestra) / Media(muestra)) * 100;
+        }
+
         public static DistributionSimetry Simetria(double [] muestra)
         {
             DistributionSimetry simetria;
