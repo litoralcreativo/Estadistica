@@ -76,7 +76,7 @@ namespace Estadistica
             return result;
         }
 
-        public static double[] Cuartil(double[] muestra)
+        public static double[] CuartilesInterpolados(double[] muestra)
         {
             double[] result = { 0, 0, 0 };
             muestra = Sort(muestra);
@@ -101,7 +101,7 @@ namespace Estadistica
             }
             return result;
         }
-        public static double[] Cuartil(int[] muestra)
+        public static double[] CuartilesInterpolados(int[] muestra)
         {
             double[] result = { 0, 0, 0 };
             muestra = Sort(muestra);
@@ -125,6 +125,62 @@ namespace Estadistica
                 result[i] = Q;
             }
             return result;
+        }
+
+        public static double Cuartil(double[] muestra, int cuartil)
+        {
+            double result = 0;
+            switch (cuartil)
+            {
+                case 1:
+                case 2:
+                case 3:
+                    result = Percentil(muestra, cuartil * 25);
+                    break;
+            }
+            return result;
+        }
+        public static int Cuartil(int[] muestra, int cuartil)
+        {
+            int result = 0;
+            switch (cuartil)
+            {
+                case 1:
+                case 2:
+                case 3:
+                    result = Percentil(muestra, cuartil * 25);
+                    break;
+            }
+            return result;
+        }
+        
+        public static double Percentil(double [] muestra, int percentil)
+        {
+            try
+            {
+                muestra = Sort(muestra);
+                int fixedIndex = (int) Math.Ceiling((double)(muestra.Length * percentil / 100.0));
+                double result = muestra[fixedIndex-1];
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public static int Percentil(int[] muestra, int percentil)
+        {
+            try
+            {
+                muestra = Sort(muestra);
+                int fixedIndex = (int)Math.Ceiling((double)(muestra.Length * percentil / 100.0));
+                int result = muestra[fixedIndex - 1];
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public static List<int> Moda(int[] muestra)
